@@ -62,8 +62,20 @@ class Triangle : public Object {
 
 class ObjectFactory {
 public:
+  ObjectFactory(const ObjectFactory &) = delete;
+  ObjectFactory &operator =(const ObjectFactory &) = delete;
+  ObjectFactory(ObjectFactory &&) = delete;
+  ObjectFactory &operator =(ObjectFactory &&) = delete;
+
   static ObjectFactory *getInstance();
+  static void deleteInstance();
+
   virtual Triangle *createTriangle(const double (&vertexes)[9]) = 0;
+
+protected:
+  ObjectFactory() = default;
+  virtual ~ObjectFactory() = default;
+  static ObjectFactory *_instance;
 };
 
 } // cg

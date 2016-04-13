@@ -65,8 +65,20 @@ void World::addObject(Object *obj) {
   _objects.push_back(obj);
 }
 
+ObjectFactory *ObjectFactory::_instance = nullptr;
+
 ObjectFactory *ObjectFactory::getInstance() {
-  return new GLObjectFactory();
+  if (!_instance) {
+    _instance = new GLObjectFactory();
+  }
+  return _instance;
+}
+
+void ObjectFactory::deleteInstance() {
+  if (_instance) {
+    delete _instance;
+    _instance = nullptr;
+  }
 }
 
 GLTriangle::GLTriangle(const double (&vertexes)[9]) {

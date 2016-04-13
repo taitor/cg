@@ -38,7 +38,7 @@ int main(int argc, const char *argv[]) {
 
   WindowFactory *wFactory = WindowFactory::getInstance();
   Window *window = wFactory->createWindowOrDie(640, 480, "Test");
-  delete wFactory;
+  WindowFactory::deleteInstance();
 
   World *world = new World();
   ObjectFactory *oFactory = ObjectFactory::getInstance();
@@ -51,6 +51,7 @@ int main(int argc, const char *argv[]) {
         }
         )
       );
+  ObjectFactory::deleteInstance();
 
   window->setWorld(world);
 

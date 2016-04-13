@@ -53,13 +53,24 @@ private:
 
 class WindowFactory {
 public:
+  WindowFactory(const WindowFactory &) = delete;
+  WindowFactory &operator =(const WindowFactory &) = delete;
+  WindowFactory(WindowFactory &&) = delete;
+  WindowFactory &operator =(WindowFactory &&) = delete;
+
   static WindowFactory *getInstance();
-  virtual ~WindowFactory() {}
+  static void deleteInstance();
+
   virtual Window *createWindowOrDie(
       uint32_t width,
       uint32_t height,
       const char title[]
       ) = 0;
+
+protected:
+  WindowFactory() = default;
+  virtual ~WindowFactory() = default;
+  static WindowFactory *_instance;
 };
 
 } // cg

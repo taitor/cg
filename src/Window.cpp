@@ -54,7 +54,6 @@ private:
 
 class GLWindowFactory : public WindowFactory {
 public:
-  GLWindowFactory() {}
   virtual Window *createWindowOrDie(
       uint32_t width,
       uint32_t height,
@@ -70,8 +69,20 @@ void Window::setWorld(World *world) {
   _world = world;
 }
 
+WindowFactory *WindowFactory::_instance = nullptr;
+
 WindowFactory *WindowFactory::getInstance() {
-  return new GLWindowFactory();
+  if (!_instance) {
+    _instance = new GLWindowFactory();
+  }
+  return _instance;
+}
+
+void WindowFactory::deleteInstance() {
+  if (_instance) {
+    delete _instance;
+    _instance = nullptr;
+  }
 }
 
 GLWindow::GLWindow(
