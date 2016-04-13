@@ -1,14 +1,15 @@
 buildtype:=release
-APP:=./app/
-SRC:=./src/
+APP:=app/
+SRC:=src/
 SRCS:=${wildcard $(SRC)*.cpp}
 CXX:=g++
 
-CXXFLAGS+=-Wall
+CXXFLAGS+=-std=c++11 -Wall -I./src/
 LDFLAGS+=
 LIBS+=
 GL:=-framework OpenGL
 GLFW:=`pkg-config --libs --cflags glfw3`
+GLFWI:=`pkg-config --cflags glfw3`
 
 ifeq ($(buildtype), release)
 	CXXFLAGS+=-O3
@@ -18,10 +19,10 @@ else
 	$(error buildtype must be release, debug, profile or coverage)
 endif
 
-OUTDIR:=./build/$(buildtype)
+OUTDIR:=./build/$(buildtype)/
 
-OBJS:=$(SRCS:%.cpp=$(OUTDIR)/%.o)
-DEPS:=$(SRCS:%.cpp=$(OUTDIR)/%.d)
+OBJS:=$(SRCS:%.cpp=$(OUTDIR)%.o)
+DEPS:=$(SRCS:%.cpp=$(OUTDIR)%.d)
 
 .PHONY: clean distclean run
 
@@ -29,13 +30,33 @@ all: sample
 
 -include $(DEPS)
 
-sample: $(OBJS) ./app/sample.cpp
+sample: $(APP)sample.cpp
 	@if [ ! -e $(OUTDIR) ]; then mkdir -p $(OUTDIR); fi
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(GL) $(GLFW) -o $(OUTDIR)/sample $^ $(LIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(GL) $(GLFW) -o $(OUTDIR)sample $^ $(LIBS)
 
-$(OUTDIR)/%.o: %.cpp
+test: $(OBJS) $(APP)test.cpp
+	@if [ ! -e $(OUTDIR) ]; then mkdir -p $(OUTDIR); fi
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(GL) $(GLFW) -o $(OUTDIR)test $^ $(LIBS)
+
+$(OUTDIR)%.o: %.cpp
 	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
 	$(CXX) $(CXXFLAGS) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
+
+#$(OUTDIR)$(SRC)GLObject.o: $(SRC)GLObject.cpp
+#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
+#	$(CXX) $(CXXFLAGS) $(GL) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
+#
+#$(OUTDIR)$(SRC)GLWindow.o: $(SRC)GLWindow.cpp
+#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
+#	$(CXX) $(CXXFLAGS) $(GLFW) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
+#
+#$(OUTDIR)$(SRC)Object.o: $(SRC)Object.cpp
+#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
+#	$(CXX) $(CXXFLAGS) $(GL) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
+#
+$(OUTDIR)$(SRC)Window.o: $(SRC)Window.cpp
+	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
+	$(CXX) $(CXXFLAGS) $(GLFWI) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
 
 clean:
 	rm -rf $(OUTDIR)
