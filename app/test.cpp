@@ -31,6 +31,28 @@ THE SOFTWARE.
 
 #include "Window.h"
 #include "Object.h"
+#include "KeyboardDelegate.h"
+
+namespace otita {
+
+namespace cg {
+
+class MyKeyDelegate : public KeyboardDelegate {
+public:
+  virtual void keyCallback(
+      Window *window,
+      int32_t key,
+      int32_t action,
+      int32_t mods
+      ) {
+    using namespace std;
+    cout << char(key) << endl;
+  }
+};
+
+}
+
+}
 
 int main(int argc, const char *argv[]) {
   using namespace std;
@@ -39,6 +61,8 @@ int main(int argc, const char *argv[]) {
   WindowFactory *wFactory = WindowFactory::getInstance();
   Window *window = wFactory->createWindowOrDie(640, 480, "Test");
   WindowFactory::deleteInstance();
+
+  window->setKeyboardDelegate(new MyKeyDelegate);
 
   World *world = new World();
   ObjectFactory *oFactory = ObjectFactory::getInstance();
