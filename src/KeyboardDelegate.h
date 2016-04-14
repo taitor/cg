@@ -1,7 +1,7 @@
 //
-//  Window.h
+//  KeyboardDelegate.h
 //
-//  Created by otita on 2016/04/12.
+//  Created by otita on 2016/04/14.
 //
 /*
 The MIT License (MIT)
@@ -27,8 +27,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef _WINDOW_H_
-#define _WINDOW_H_
+#ifndef _KEYBOARDDELEGATE_H_
+#define _KEYBOARDDELEGATE_H_
 
 #include <cstdint>
 
@@ -36,50 +36,21 @@ namespace otita {
 
 namespace cg {
 
-class World;
-class KeyboardDelegate;
+class Window;
 
-class Window {
+class KeyboardDelegate {
 public:
-  Window() : _world(nullptr), _keyboardDelegate(nullptr) {}
-  virtual ~Window() {}
-  virtual bool shouldClose() const = 0;
-  void draw() const;
-  virtual void clear() = 0;
-  virtual void swapBuffers() = 0;
-  void setWorld(World *world);
-  virtual void setKeyboardDelegate(
-      KeyboardDelegate *keyboardDelegate
-      );
-protected:
-  World *_world;
-  KeyboardDelegate *_keyboardDelegate;
-};
-
-class WindowFactory {
-public:
-  WindowFactory(const WindowFactory &) = delete;
-  WindowFactory &operator =(const WindowFactory &) = delete;
-  WindowFactory(WindowFactory &&) = delete;
-  WindowFactory &operator =(WindowFactory &&) = delete;
-
-  static WindowFactory *getInstance();
-  static void deleteInstance();
-
-  virtual Window *createWindowOrDie(
-      uint32_t width,
-      uint32_t height,
-      const char title[]
+  virtual void keyCallback(
+      Window *window,
+      int32_t key,
+      int32_t action,
+      int32_t mods
       ) = 0;
-
-protected:
-  WindowFactory() = default;
-  virtual ~WindowFactory() = default;
-  static WindowFactory *_instance;
+  virtual ~KeyboardDelegate() = default;
 };
 
 } // cg
 
 } // otita
 
-#endif  // _WINDOW_H_
+#endif  // _KEYBOARDDELEGATE_H_

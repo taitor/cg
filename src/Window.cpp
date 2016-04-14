@@ -34,12 +34,14 @@ THE SOFTWARE.
 
 #include "Window.h"
 #include "Object.h"
+#include "KeyboardDelegate.h"
 
 namespace otita {
 
 namespace cg {
 
 class GLWindow : public Window {
+  using base = Window;
 public:
   GLWindow(uint32_t width,
            uint32_t height,
@@ -48,6 +50,9 @@ public:
   virtual bool shouldClose() const;
   virtual void clear();
   virtual void swapBuffers();
+  virtual void setKeyboardDelegate(
+      KeyboardDelegate *keyboardDelegate
+      );
 private:
   GLFWwindow *_window;
 };
@@ -67,6 +72,15 @@ void Window::draw() const {
 
 void Window::setWorld(World *world) {
   _world = world;
+}
+
+void Window::setKeyboardDelegate(
+    KeyboardDelegate *keyboardDelegate
+    ) {
+  if (_keyboardDelegate != keyboardDelegate) {
+    if (_keyboardDelegate) delete _keyboardDelegate;
+    _keyboardDelegate = keyboardDelegate;
+  }
 }
 
 WindowFactory *WindowFactory::_instance = nullptr;
@@ -136,6 +150,12 @@ void GLWindow::clear() {
 void GLWindow::swapBuffers() {
   glfwSwapBuffers(_window);
   glfwPollEvents();
+}
+
+void GLWindow::setKeyboardDelegate(
+    KeyboardDelegate *keyboardDelegate
+    ) {
+  base::setKeyboardDelegate(keyboardDelegate);
 }
 
 Window *GLWindowFactory::createWindowOrDie(
