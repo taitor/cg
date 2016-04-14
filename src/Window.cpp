@@ -62,6 +62,13 @@ private:
       int action,
       int mods
       );
+  static void _callback(
+      GLFWwindow *window,
+      int key,
+      int scancode,
+      int action,
+      int mods
+      );
 };
 
 class GLWindowFactory : public WindowFactory {
@@ -72,8 +79,6 @@ public:
       const char title[]
       );
 };
-
-Window *Window::_keyWindow = nullptr;
 
 void Window::draw() const {
   if (_world) _world->render();
@@ -128,15 +133,12 @@ GLWindow::GLWindow(
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
+  glfwSetWindowUserPointer(_window, this);
   glfwMakeContextCurrent(_window);
-  _keyWindow = this;
   glfwSwapInterval(1);
 }
 
 GLWindow::~GLWindow() {
-  if (this == _keyWindow) {
-    _keyWindow = nullptr;
-  }
   glfwDestroyWindow(_window);
   glfwTerminate();
 }
@@ -174,6 +176,7 @@ void GLWindow::setKeyboardDelegate(
     ) {
   using namespace std;
   base::setKeyboardDelegate(keyboardDelegate);
+
   glfwSetKeyCallback(_window, _keyCallback);
 }
 
@@ -184,11 +187,14 @@ void GLWindow::_keyCallback(
     int action,
     int mods
     ) {
-  if (_keyWindow) {
-    KeyboardDelegate *delegate = _keyWindow->keyboardDelegate();
+  GLWindow *glWindow = reinterpret_cast<GLWindow *>(
+      glfwGetWindowUserPointer(window)
+      );
+  if (glWindow) {
+    KeyboardDelegate *delegate = glWindow->keyboardDelegate();
     if (delegate) {
       delegate->keyCallback(
-          _keyWindow,
+          glWindow,
           key,
           action,
           mods
@@ -196,7 +202,7 @@ void GLWindow::_keyCallback(
     }
   }
 }
-  
+ 
 Window *GLWindowFactory::createWindowOrDie(
     uint32_t width,
     uint32_t height,

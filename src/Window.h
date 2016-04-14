@@ -53,7 +53,6 @@ public:
       KeyboardDelegate *keyboardDelegate
       );
 protected:
-  static Window *_keyWindow;
   World *_world;
   KeyboardDelegate *_keyboardDelegate;
 };
