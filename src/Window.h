@@ -48,7 +48,6 @@ public:
   virtual void clear() = 0;
   virtual void swapBuffers() = 0;
   void setWorld(World *world);
-  KeyboardDelegate *keyboardDelegate();
   virtual void setKeyboardDelegate(
       KeyboardDelegate *keyboardDelegate
       );

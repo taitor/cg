@@ -62,13 +62,6 @@ private:
       int action,
       int mods
       );
-  static void _callback(
-      GLFWwindow *window,
-      int key,
-      int scancode,
-      int action,
-      int mods
-      );
 };
 
 class GLWindowFactory : public WindowFactory {
@@ -86,10 +79,6 @@ void Window::draw() const {
 
 void Window::setWorld(World *world) {
   _world = world;
-}
-
-KeyboardDelegate *Window::keyboardDelegate() {
-  return _keyboardDelegate;
 }
 
 void Window::setKeyboardDelegate(
@@ -191,7 +180,7 @@ void GLWindow::_keyCallback(
       glfwGetWindowUserPointer(window)
       );
   if (glWindow) {
-    KeyboardDelegate *delegate = glWindow->keyboardDelegate();
+    KeyboardDelegate *delegate = glWindow->_keyboardDelegate;
     if (delegate) {
       delegate->keyCallback(
           glWindow,
