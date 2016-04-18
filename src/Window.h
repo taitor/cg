@@ -43,15 +43,17 @@ class KeyboardDelegate;
 class Window {
 public:
   Window();
-  virtual ~Window() {}
-  virtual bool shouldClose() const = 0;
-  void draw() const;
-  virtual void clear() = 0;
-  virtual void swapBuffers() = 0;
+  virtual ~Window() = default;
+  World *world();
   void setWorld(World *world);
+  Camera *camera();
   virtual void setKeyboardDelegate(
       KeyboardDelegate *keyboardDelegate
       );
+  void draw() const;
+  virtual bool shouldClose() const = 0;
+  virtual void clear() = 0;
+  virtual void swapBuffers() = 0;
 protected:
   World *_world;
   Camera *_camera;

@@ -80,13 +80,16 @@ Window::Window() : _world(nullptr), _keyboardDelegate(nullptr) {
   CameraFactory::deleteInstance();
 }
 
-void Window::draw() const {
-  if (_camera) _camera->look();
-  if (_world) _world->render();
+World *Window::world() {
+  return _world;
 }
 
 void Window::setWorld(World *world) {
   _world = world;
+}
+
+Camera *Window::camera() {
+  return _camera;
 }
 
 void Window::setKeyboardDelegate(
@@ -96,6 +99,11 @@ void Window::setKeyboardDelegate(
     if (_keyboardDelegate) delete _keyboardDelegate;
     _keyboardDelegate = keyboardDelegate;
   }
+}
+
+void Window::draw() const {
+  if (_camera) _camera->look();
+  if (_world) _world->render();
 }
 
 WindowFactory *WindowFactory::_instance = nullptr;
