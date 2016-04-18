@@ -38,7 +38,7 @@ namespace cg {
 class GLTriangle : public Triangle {
 public:
   GLTriangle(const double (&vertexes)[9]);
-  virtual void render() const;
+  virtual void render();
 private:
   double _vertexes[9];
 };
@@ -54,7 +54,7 @@ World::~World() {
   }
 }
 
-void World::render() const {
+void World::render() {
   using namespace std;
   for (Object *obj : _objects) {
     obj->render();
@@ -87,7 +87,7 @@ GLTriangle::GLTriangle(const double (&vertexes)[9]) {
   }
 }
 
-void GLTriangle::render() const {
+void GLTriangle::render() {
   glBegin(GL_TRIANGLES);
   {
     glColor3d(1, 0, 0);

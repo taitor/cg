@@ -36,14 +36,35 @@ namespace cg {
 
 class Camera {
 public:
-  virtual void setEye(double (&eye)[3]) = 0;
-  virtual void setCenter(double (&center)[3]) = 0;
-  virtual void setUp(double (&up)[3]) = 0;
+  virtual ~Camera() = default;
+  virtual void setEye(const double (&eye)[3]) = 0;
+  virtual void setCenter(const double (&center)[3]) = 0;
+  virtual void setUp(const double (&up)[3]) = 0;
   virtual void lookAt(
-      double (&eye)[3],
-      double (&center)[3],
-      double (&up)[3]
-      ) = 0;
+      const double (&eye)[3],
+      const double (&center)[3],
+      const double (&up)[3]
+      );
+  virtual void look() = 0;
+private:
+};
+
+class CameraFactory {
+public:
+  CameraFactory(const CameraFactory &) = delete;
+  CameraFactory &operator =(const CameraFactory &) = delete;
+  CameraFactory(CameraFactory &&) = delete;
+  CameraFactory &operator =(CameraFactory &&) = delete;
+
+  static CameraFactory *getInstance();
+  static void deleteInstance();
+
+  virtual Camera *createCamera() = 0;
+
+protected:
+  CameraFactory() = default;
+  virtual ~CameraFactory() = default;
+  static CameraFactory *_instance;
 };
 
 } // cg

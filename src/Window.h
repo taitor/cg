@@ -37,11 +37,12 @@ namespace otita {
 namespace cg {
 
 class World;
+class Camera;
 class KeyboardDelegate;
 
 class Window {
 public:
-  Window() : _world(nullptr), _keyboardDelegate(nullptr) {}
+  Window();
   virtual ~Window() {}
   virtual bool shouldClose() const = 0;
   void draw() const;
@@ -53,6 +54,7 @@ public:
       );
 protected:
   World *_world;
+  Camera *_camera;
   KeyboardDelegate *_keyboardDelegate;
 };
 

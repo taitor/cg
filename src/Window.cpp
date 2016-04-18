@@ -34,6 +34,7 @@ THE SOFTWARE.
 
 #include "Window.h"
 #include "Object.h"
+#include "Camera.h"
 #include "KeyboardDelegate.h"
 
 namespace otita {
@@ -73,7 +74,14 @@ public:
       );
 };
 
+Window::Window() : _world(nullptr), _keyboardDelegate(nullptr) {
+  CameraFactory *factory = CameraFactory::getInstance();
+  _camera = factory->createCamera();
+  CameraFactory::deleteInstance();
+}
+
 void Window::draw() const {
+  if (_camera) _camera->look();
   if (_world) _world->render();
 }
 
@@ -146,9 +154,9 @@ void GLWindow::clear() {
   glViewport(0, 0, width, height);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  glOrtho(-ratio, ratio, -1., 1., 1., -1.);
+//  glMatrixMode(GL_PROJECTION);
+//  glLoadIdentity();
+//  glOrtho(-ratio, ratio, -1., 1., 1., -1.);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();

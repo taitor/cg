@@ -38,14 +38,14 @@ namespace cg {
 
 class Object {
 public:
-  virtual ~Object() {}
-  virtual void render() const = 0;
+  virtual ~Object() = default;
+  virtual void render() = 0;
 };
 
 class World : Object {
 public:
   virtual ~World();
-  virtual void render() const;
+  virtual void render();
   void addObject(Object *obj);
 private:
   std::list<Object *> _objects;
