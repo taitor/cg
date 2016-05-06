@@ -138,7 +138,6 @@ void GLCamera::look() {
                     -f[0],   -f[1],   -f[2],     0.,
                   _eye[0], _eye[1], _eye[2],     1.};
 
-  glMatrixMode(GL_PROJECTION);                
   glLoadIdentity();
   glMultMatrixd(M);
 }

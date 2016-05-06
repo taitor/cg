@@ -80,7 +80,7 @@ int main(int argc, const char *argv[]) {
       {
       0., 0.,
       },
-      0.3
+      1.
     )
   );
   ObjectFactory::deleteInstance();

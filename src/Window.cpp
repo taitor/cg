@@ -107,7 +107,7 @@ void Window::setKeyboardDelegate(
 }
 
 void Window::draw() const {
-  if (_camera) _camera->look();
+//  if (_camera) _camera->look();
   if (_world) _world->render();
 }
 
@@ -147,6 +147,11 @@ GLWindow::GLWindow(
   glfwSetWindowUserPointer(_window, this);
   glfwMakeContextCurrent(_window);
   glfwSwapInterval(1);
+
+  _resizeCallback(
+      _window,
+      width, height
+      );
 }
 
 GLWindow::~GLWindow() {
@@ -221,12 +226,19 @@ void GLWindow::_resizeCallback(
   glfwGetFramebufferSize(window, &width, &height);
   glViewport(0, 0, width, height);
 
+
   glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+  GLWindow *glWindow = reinterpret_cast<GLWindow *>(
+      glfwGetWindowUserPointer(window)
+      );
+  if (glWindow) {
+    Camera *camera = glWindow->_camera;
+    if (camera) camera->look();
+  }
   glOrtho(
       -width / 200., width / 200.,
       -height / 200., height / 200.,
-      -1., -1.
+      -1., 1.
       );
 }
  
