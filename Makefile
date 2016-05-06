@@ -42,18 +42,6 @@ $(OUTDIR)%.o: %.cpp
 	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
 	$(CXX) $(CXXFLAGS) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
 
-#$(OUTDIR)$(SRC)GLObject.o: $(SRC)GLObject.cpp
-#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
-#	$(CXX) $(CXXFLAGS) $(GL) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
-#
-#$(OUTDIR)$(SRC)GLWindow.o: $(SRC)GLWindow.cpp
-#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
-#	$(CXX) $(CXXFLAGS) $(GLFW) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
-#
-#$(OUTDIR)$(SRC)Object.o: $(SRC)Object.cpp
-#	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
-#	$(CXX) $(CXXFLAGS) $(GL) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<
-#
 $(OUTDIR)$(SRC)Window.o: $(SRC)Window.cpp
 	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
 	$(CXX) $(CXXFLAGS) $(GLFWI) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<

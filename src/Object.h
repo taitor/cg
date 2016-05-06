@@ -30,6 +30,7 @@ THE SOFTWARE.
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
+#include <cstdint>
 #include <list>
 
 namespace otita {
@@ -60,6 +61,9 @@ class Line : public Object {
 class Triangle : public Object {
 };
 
+class Circle : public Object {
+};
+
 class ObjectFactory {
 public:
   ObjectFactory(const ObjectFactory &) = delete;
@@ -70,7 +74,10 @@ public:
   static ObjectFactory *getInstance();
   static void deleteInstance();
 
-  virtual Triangle *createTriangle(const double (&vertexes)[9]) = 0;
+  virtual Triangle *createTriangle(const double (&vertexes)[6]) = 0;
+
+  virtual Circle *createCircle(const double (&center)[2],
+                               const double radius) = 0;
 
 protected:
   ObjectFactory() = default;

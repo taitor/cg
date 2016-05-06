@@ -66,15 +66,23 @@ int main(int argc, const char *argv[]) {
 
   World *world = new World();
   ObjectFactory *oFactory = ObjectFactory::getInstance();
+//  world->addObject(
+//    oFactory->createTriangle(
+//      {
+//      -0.6, -0.4,
+//      0.6,  -0.4,
+//      0.,    0.6,
+//      }
+//    )
+//  );
   world->addObject(
-      oFactory->createTriangle(
-        {
-        -0.6, -0.4, 0.,
-        0.6,  -0.4, 0.,
-        0.,    0.6, 0.,
-        }
-        )
-      );
+    oFactory->createCircle(
+      {
+      0., 0.,
+      },
+      0.3
+    )
+  );
   ObjectFactory::deleteInstance();
 
   window->setWorld(world);

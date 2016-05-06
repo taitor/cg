@@ -27,6 +27,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <cmath>
+
 #include <OpenGL/gl.h>
 
 #include "Object.h"
@@ -37,15 +39,27 @@ namespace cg {
 
 class GLTriangle : public Triangle {
 public:
-  GLTriangle(const double (&vertexes)[9]);
+  GLTriangle(const double (&vertexes)[6]);
   virtual void render();
 private:
-  double _vertexes[9];
+  double _vertexes[6];
+};
+
+class GLCircle : public Circle {
+public:
+  GLCircle(const double (&center)[2],
+           const double radius);
+  virtual void render();
+private:
+  double _center[2];
+  double _radius;
 };
 
 class GLObjectFactory : public ObjectFactory {
 public:
-  virtual Triangle *createTriangle(const double (&vertexes)[9]);
+  virtual Triangle *createTriangle(const double (&vertexes)[6]);
+  virtual Circle *createCircle(const double (&center)[2],
+                               const double radius);
 };
 
 World::~World() {
@@ -81,8 +95,8 @@ void ObjectFactory::deleteInstance() {
   }
 }
 
-GLTriangle::GLTriangle(const double (&vertexes)[9]) {
-  for (uint32_t i = 0; i < 9; i++) {
+GLTriangle::GLTriangle(const double (&vertexes)[6]) {
+  for (uint32_t i = 0; i < 6; i++) {
     _vertexes[i] = vertexes[i];
   }
 }
@@ -92,14 +106,48 @@ void GLTriangle::render() {
   {
     glColor3d(1, 0, 0);
     for (uint32_t i = 0; i < 3; i++) {
-      glVertex3d(_vertexes[3 * i], _vertexes[3 * i + 1], _vertexes[3 * i + 2]);
+      glVertex3d(_vertexes[2 * i], _vertexes[2 * i + 1], 0.);
     }
   }
   glEnd();
 }
 
-Triangle *GLObjectFactory::createTriangle(const double (&vertexes)[9]) {
+GLCircle::GLCircle(const double (&center)[2],
+                   const double radius) {
+  for (unsigned i = 0; i < 2; i++) {
+    _center[i] = center[i];
+  }
+  _radius = radius;
+}
+
+void GLCircle::render() {
+  for (double th1 = 0.0; th1 <= 360.; th1 += 1.) {
+    double th2 = th1 + 10.0;
+    double th1_rad = th1 / 180.0 * M_PI; 
+    double th2_rad = th2 / 180.0 * M_PI;
+  
+    double x1 = _radius * cos(th1_rad);
+    double y1 = _radius * sin(th1_rad);
+    double x2 = _radius * cos(th2_rad);
+    double y2 = _radius * sin(th2_rad);
+  
+    glBegin(GL_TRIANGLES); 
+    {
+      glVertex3d(_center[0], _center[1], 0.);
+      glVertex3d(_center[0] + x1, _center[1] + y1, 0.);     
+      glVertex3d(_center[0] + x2, _center[1] + y2, 0.);
+    }
+    glEnd();
+  }
+}
+
+Triangle *GLObjectFactory::createTriangle(const double (&vertexes)[6]) {
   return new GLTriangle(vertexes);
+}
+
+Circle *GLObjectFactory::createCircle(const double (&center)[2],
+                                      const double radius) {
+  return new GLCircle(center, radius);
 }
 
 } // cg

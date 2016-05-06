@@ -31,7 +31,6 @@ THE SOFTWARE.
 #include <cmath>
 
 #include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 
 #include "Camera.h"
 
@@ -84,7 +83,7 @@ void CameraFactory::deleteInstance() {
 }
 
 GLCamera::GLCamera() {
-  setEye({0., 0., 1});
+  setEye({0., 0., 0.8});
   setCenter({0., 0., 0.});
   setUp({0., 1., 0.});
 }
@@ -141,9 +140,6 @@ void GLCamera::look() {
 
   glMatrixMode(GL_PROJECTION);                
   glLoadIdentity();
-//  gluLookAt(_eye[0], _eye[1], _eye[2],
-//            _center[0], _center[1], _center[2],
-//            _up[0], _up[1], _up[2]);
   glMultMatrixd(M);
 }
 
