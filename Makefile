@@ -38,6 +38,10 @@ test: $(OBJS) $(APP)test.cpp
 	@if [ ! -e $(OUTDIR) ]; then mkdir -p $(OUTDIR); fi
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(GL) $(GLFW) -o $(OUTDIR)test $^ $(LIBS)
 
+assign1_1: $(OBJS) $(APP)assign1_1.cpp
+	@if [ ! -e $(OUTDIR) ]; then mkdir -p $(OUTDIR); fi
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(GL) $(GLFW) -o $(OUTDIR)assign1_1 $^ $(LIBS)
+
 $(OUTDIR)%.o: %.cpp
 	@if [ ! -e `dirname $@` ]; then mkdir -p `dirname $@`; fi
 	$(CXX) $(CXXFLAGS) -o $@ -c -MMD -MP -MF $(@:%.o=%.d) $<

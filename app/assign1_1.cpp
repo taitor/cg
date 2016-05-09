@@ -1,5 +1,5 @@
 //
-//  assignment1.cpp
+//  assign1_1.cpp
 //
 //  Created by otita on 2016/05/02.
 //
@@ -28,3 +28,44 @@ THE SOFTWARE.
 */
 
 
+#include <iostream>
+
+#include "Window.h"
+#include "Object.h"
+#include "KeyboardDelegate.h"
+
+int main(int argc, const char *argv[]) {
+  using namespace std;
+  using namespace otita::cg;
+
+  WindowFactory *wFactory = WindowFactory::getInstance();
+  Window *window = wFactory->createWindowOrDie(500, 500, "Test");
+  WindowFactory::deleteInstance();
+
+  World *world = new World();
+  ObjectFactory *oFactory = ObjectFactory::getInstance();
+  Circle *circle1 = oFactory->createCircle(1.);
+  Circle *circle2 = oFactory->createCircle(1.5);
+  world->addObject(circle1);
+  world->addObject(circle2);
+  ObjectFactory::deleteInstance();
+
+  window->setWorld(world);
+
+  double pos1[2] = {0., 1.};
+  double pos2[2] = {0., 0.};
+  while (!window->shouldClose()) {
+    window->clear();
+    circle1->setPosition(pos1);
+    circle2->setPosition(pos2);
+    window->draw();
+    pos1[1] += 0.1;
+    pos2[0] += 0.15;
+    window->swapBuffers();
+  }
+
+  delete world;
+  delete window;
+
+  return 0;
+}

@@ -41,9 +41,10 @@ class Object {
 public:
   virtual ~Object() = default;
   virtual void render() = 0;
+  virtual void setPosition(const double (&coord)[2]) = 0;
 };
 
-class World : Object {
+class World {
 public:
   virtual ~World();
   virtual void render();
@@ -52,6 +53,7 @@ private:
   std::list<Object *> _objects;
 };
 
+#if 0
 class Vertex : public Object {
 };
 
@@ -60,6 +62,7 @@ class Line : public Object {
 
 class Triangle : public Object {
 };
+#endif
 
 class Circle : public Object {
 };
@@ -74,10 +77,11 @@ public:
   static ObjectFactory *getInstance();
   static void deleteInstance();
 
+#if 0
   virtual Triangle *createTriangle(const double (&vertexes)[6]) = 0;
+#endif
 
-  virtual Circle *createCircle(const double (&center)[2],
-                               const double radius) = 0;
+  virtual Circle *createCircle(const double radius) = 0;
 
 protected:
   ObjectFactory() = default;

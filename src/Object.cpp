@@ -37,6 +37,7 @@ namespace otita {
 
 namespace cg {
 
+#if 0
 class GLTriangle : public Triangle {
 public:
   GLTriangle(const double (&vertexes)[6]);
@@ -44,12 +45,13 @@ public:
 private:
   double _vertexes[6];
 };
+#endif
 
 class GLCircle : public Circle {
 public:
-  GLCircle(const double (&center)[2],
-           const double radius);
+  GLCircle(const double radius);
   virtual void render();
+  virtual void setPosition(const double (&coord)[2]);
 private:
   double _center[2];
   double _radius;
@@ -57,9 +59,10 @@ private:
 
 class GLObjectFactory : public ObjectFactory {
 public:
+#if 0
   virtual Triangle *createTriangle(const double (&vertexes)[6]);
-  virtual Circle *createCircle(const double (&center)[2],
-                               const double radius);
+#endif
+  virtual Circle *createCircle(const double radius);
 };
 
 World::~World() {
@@ -95,6 +98,7 @@ void ObjectFactory::deleteInstance() {
   }
 }
 
+#if 0
 GLTriangle::GLTriangle(const double (&vertexes)[6]) {
   for (uint32_t i = 0; i < 6; i++) {
     _vertexes[i] = vertexes[i];
@@ -111,16 +115,19 @@ void GLTriangle::render() {
   }
   glEnd();
 }
+#endif
 
-GLCircle::GLCircle(const double (&center)[2],
-                   const double radius) {
+GLCircle::GLCircle(const double radius) {
   for (unsigned i = 0; i < 2; i++) {
-    _center[i] = center[i];
+    _center[i] = 0.;
   }
   _radius = radius;
 }
 
 void GLCircle::render() {
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glTranslated(-_center[0], -_center[1], 0.);
   for (double th1 = 0.0; th1 <= 360.; th1 += 1.) {
     double th2 = th1 + 10.0;
     double th1_rad = th1 / 180.0 * M_PI; 
@@ -133,21 +140,29 @@ void GLCircle::render() {
   
     glBegin(GL_TRIANGLES); 
     {
-      glVertex3d(_center[0], _center[1], 0.);
-      glVertex3d(_center[0] + x1, _center[1] + y1, 0.);     
-      glVertex3d(_center[0] + x2, _center[1] + y2, 0.);
+      glVertex3d(0., 0., 0.);
+      glVertex3d(x1, y1, 0.);     
+      glVertex3d(x2, y2, 0.);
     }
     glEnd();
   }
+  glPopMatrix();
 }
 
+void GLCircle::setPosition(const double (&coord)[2]) {
+  for (uint32_t i = 0; i < 2; i++) {
+    _center[i] = coord[i];
+  }
+}
+
+#if 0
 Triangle *GLObjectFactory::createTriangle(const double (&vertexes)[6]) {
   return new GLTriangle(vertexes);
 }
+#endif
 
-Circle *GLObjectFactory::createCircle(const double (&center)[2],
-                                      const double radius) {
-  return new GLCircle(center, radius);
+Circle *GLObjectFactory::createCircle(const double radius) {
+  return new GLCircle(radius);
 }
 
 } // cg

@@ -107,7 +107,6 @@ void Window::setKeyboardDelegate(
 }
 
 void Window::draw() const {
-//  if (_camera) _camera->look();
   if (_world) _world->render();
 }
 
@@ -165,21 +164,6 @@ bool GLWindow::shouldClose() const {
 
 void GLWindow::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//  float ratio;
-//  int width, height;
-//  glfwGetFramebufferSize(_window, &width, &height);
-//  ratio = float(width) / float(height);
-//
-//  glViewport(0, 0, width, height);
-//  glClear(GL_COLOR_BUFFER_BIT);
-//
-////  glMatrixMode(GL_PROJECTION);
-////  glLoadIdentity();
-////  glOrtho(-ratio, ratio, -1., 1., 1., -1.);
-//
-//  glMatrixMode(GL_MODELVIEW);
-//  glLoadIdentity();
-////  glRotatef(glfwGetTime() * 50., 0., 0., 1.);
 }
 
 void GLWindow::swapBuffers() {
@@ -236,8 +220,8 @@ void GLWindow::_resizeCallback(
     if (camera) camera->look();
   }
   glOrtho(
-      -width / 200., width / 200.,
-      -height / 200., height / 200.,
+      -width / 50., width / 50.,
+      -height / 50., height / 50.,
       -1., 1.
       );
 }
