@@ -4,7 +4,7 @@ SRC:=src/
 SRCS:=${wildcard $(SRC)*.cpp}
 CXX:=g++
 
-CXXFLAGS+=-std=c++11 -Wall -I./src/
+CXXFLAGS+=-std=c++1y -Wall -I./src/
 LDFLAGS+=
 LIBS+=
 GL:=-framework OpenGL

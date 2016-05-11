@@ -210,7 +210,6 @@ void GLWindow::_resizeCallback(
   glfwGetFramebufferSize(window, &width, &height);
   glViewport(0, 0, width, height);
 
-
   glMatrixMode(GL_PROJECTION);
   GLWindow *glWindow = reinterpret_cast<GLWindow *>(
       glfwGetWindowUserPointer(window)
@@ -219,10 +218,15 @@ void GLWindow::_resizeCallback(
     Camera *camera = glWindow->_camera;
     if (camera) camera->look();
   }
+//  glOrtho(
+//      -width / 50., width / 50.,
+//      -height / 50., height / 50.,
+//      -0., 1.
+//      );
   glOrtho(
-      -width / 50., width / 50.,
-      -height / 50., height / 50.,
-      -1., 1.
+      -10., 10.,
+      -10., 10.,
+      -0., 1.
       );
 }
  

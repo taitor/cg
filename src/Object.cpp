@@ -127,7 +127,7 @@ GLCircle::GLCircle(const double radius) {
 void GLCircle::render() {
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
-  glTranslated(-_center[0], -_center[1], 0.);
+  glTranslated(_center[0], _center[1], 0.);
   for (double th1 = 0.0; th1 <= 360.; th1 += 1.) {
     double th2 = th1 + 10.0;
     double th1_rad = th1 / 180.0 * M_PI; 

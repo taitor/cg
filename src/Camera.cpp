@@ -83,7 +83,7 @@ void CameraFactory::deleteInstance() {
 }
 
 GLCamera::GLCamera() {
-  setEye({0., 0., 0.8});
+  setEye({0., 0., 1.});
   setCenter({0., 0., 0.});
   setUp({0., 1., 0.});
 }
